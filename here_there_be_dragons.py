@@ -1,5 +1,8 @@
 import random
 import time
+from dragon_hunter_files import dragon_hunters
+from dragon_hunter_files import record
+from dragon_hunter_files import loot_bags
 
 class Dragon(object):
     def __init__(self, health, power):
@@ -16,6 +19,20 @@ def intro(name):
     print "Hello! What is your hero's name?"
     name = raw_input()
     return name
+
+def loot_bag_search(name):
+    if (name in dragon_hunters and len(loot_bags[name]) > 0):
+        loot_bag = loot_bags[name]
+        print ""
+        for i in loot_bag:
+            print "You have a " + i + " in your loot bag."
+        print ""
+    else:
+        loot_bag = []
+        print ""
+        print "You have nothing in your loot bag."
+        print ""
+    return loot_bag
 	
 def d_diff(ddiff):
     print ""
@@ -126,6 +143,7 @@ def loot(difficulty, hero_class):
     else:
         final_prize = 'pouch of coins'
     
+    loot_bags[hero_name].append(final_prize)
     return final_prize
     
 
@@ -179,6 +197,13 @@ hero_w = Hero(90, 10)
 hero_r = Hero(80, 15)
 
 hero_name = intro('name')
+loot_bag = loot_bag_search(hero_name)
+
+if hero_name not in dragon_hunters:
+    dragon_hunters.append(hero_name)
+    record[hero_name] = {'wins': 0, 'losses': 0, 'ties': 0}
+    loot_bags[hero_name] = []
+
 dragon_difficulty = d_diff('ddiff')
 player_class = h_class('hclass')
 dragon_power = drag(dragon_difficulty)
